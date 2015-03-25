@@ -83,12 +83,12 @@ The output format is:
 > FLAG REVISION-ID TITLE
 
 FLAG| Meaning
--------------------------
+----|:-------------------
 ?   | Unknown 
 U   | Server has newer revision
 M   | Local file modified
 C   | Both server and local file modified
-=   | Local file is identical to newest revision
+=| Local file is identical to newest revision
 
 ## Config
 
