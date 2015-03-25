@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary	= "A tool for Mediawiki users"
   s.description	= "Uses Mediawiki API to access the wiki articles, including Wikipedia."
   s.homepage	= "https://github.com/afukumoto/mediawiki-editor-tool"
-  s.license	= 'GPL-2'
+  s.license	= 'MIT'
   s.executables	<< "met"
   s.files	= `git ls-files`.split
   s.add_runtime_dependency "mediawiki_api", '~> 0.3'
