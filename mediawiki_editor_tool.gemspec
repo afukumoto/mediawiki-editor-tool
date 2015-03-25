@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email	= ["fukumoto@imasy.or.jp"]
   s.summary	= "A tool for Mediawiki users"
   s.description	= "Uses Mediawiki API to access the wiki articles, including Wikipedia."
-  s.homepage	= "https://github.com/afukumoto/mediawiki_editor_tool"
+  s.homepage	= "https://github.com/afukumoto/mediawiki-editor-tool"
   s.license	= 'GPL-2'
   s.executables	<< "met"
   s.files	= `git ls-files`.split
