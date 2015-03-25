@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors	= ["Atsushi Fukumoto"]
   s.email	= ["fukumoto@imasy.or.jp"]
   s.summary	= "A tool for Mediawiki users"
-  s.description	= "Uses Mediawiki API to retrieve the text and history of the wiki articles, including Wikipedia."
+  s.description	= "Uses Mediawiki API to access the wiki articles, including Wikipedia."
   s.homepage	= "https://github.com/afukumoto/mediawiki_editor_tool"
   s.license	= 'GPL-2'
   s.executables	<< "met"
