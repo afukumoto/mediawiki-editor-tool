@@ -1,0 +1,5 @@
+#! /usr/bin/env ruby
+
+require 'mediawiki_editor_tool'
+
+MediawikiEditorTool::main
