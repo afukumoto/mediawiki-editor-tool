@@ -1,7 +1,6 @@
 module MediawikiEditorTool
   CONFIG_DEFAULT = {
     PROGNAME:		"MediawikiEditorTool",
-    VERSION:		"0.1",
     API_URL_LANG:	{
       "en" => "https://en.wikipedia.org/w/api.php"
     },
@@ -13,7 +12,7 @@ module MediawikiEditorTool
 
   class << self
     def user_agent_string
-      "#{Config[:PROGNAME]}/#{Config[:VERSION]} MediawikiApi/#{MediawikiApi::VERSION}"
+      "#{Config[:PROGNAME]}/#{MediawikiEditorTool::VERSION} MediawikiApi/#{MediawikiApi::VERSION}"
     end
   end
 end
