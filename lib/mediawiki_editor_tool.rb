@@ -23,7 +23,7 @@ module MediawikiEditorTool
   class Page
     class << self
       def metafilepath(title)
-        File.join(MET_DIR, META_DIR_NAME, title)
+        File.join(MET_DIR, META_DIR_NAME, MediawikiEditorTool::escape_filename(title))
       end
     end
 
@@ -42,7 +42,7 @@ module MediawikiEditorTool
         JSON.parse(file.read)
       }
       self
-    rescue
+    rescue Errno::NOENT
       nil
     end
 
@@ -127,18 +127,34 @@ module MediawikiEditorTool
   end
 
   class << self
+    def escape_filename(str)
+      str.gsub(/[%#{File::SEPARATOR}]/, 
+               {
+                 '%' => '%%',
+                 File::SEPARATOR => ("%%%02X" % File::SEPARATOR.ord)
+               })
+    end
+
     def article_filename(title)
-      title + Config[:ARTICLE_FILENAME_EXTENSION]
+      escape_filename(title) + Config[:ARTICLE_FILENAME_EXTENSION]
     end
 
     def check_title(title)
-      if title =~ /\//
-        abort "title should not contain slash"
+      title = title.sub(/#{Regexp.quote(Config[:ARTICLE_FILENAME_EXTENSION])}$/, "")
+      title = title.gsub(/(%%|%\h+|%)/) { |match|
+        case match
+        when "%%"
+          "%"
+        when "%"
+          abort "Unexpected % in title.  Use %% in place of %."
+        else
+          match[1,2].hex.chr
+        end
+      }
+      if title =~ /[\#\<\>\[\]\|\{\}]/
+        abort "Title should not contain '#{$&}' character."
       end
-      if title =~ /\|/
-        abort "title should not contain vertical bar"
-      end
-      title.sub(/#{Config[:ARTICLE_FILENAME_EXTENSION]}$/o, "")
+      title
     end
 
     def cookie_filename
