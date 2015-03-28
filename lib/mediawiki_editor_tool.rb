@@ -42,7 +42,7 @@ module MediawikiEditorTool
         JSON.parse(file.read)
       }
       self
-    rescue Errno::NOENT
+    rescue Errno::ENOENT
       nil
     end
 
