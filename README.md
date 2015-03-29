@@ -24,7 +24,8 @@ By default, met command accesses https://en.wikipedia.org/.  Option `-l LANG` is
 
 Use option `-u URL` to specify the Mediawiki API URL explictly.
 
-Wiki articles are specified with its titles, and local files will be named with ".wiki" suffixes after the title.  For example, "Wikipedia:Sandbox" will be stored locally in the file Wikipedia:Sandbox.wiki
+Wiki articles are specified with its titles, and local files will be named with ".wiki" suffixes after the title.  For example, "Wikipedia:Sandbox" will be stored locally in the file `Wikipedia:Sandbox.wiki`.
+If section edit is specified, the local file with an extension ".section" and the section number is used.  For example, section 1 of "Wikipedia:Sandbox" is stored in `Wikipedia:Sandbox.section1.wiki`.
 
 `met` command creates a directory named `.MediawikiEditorTool` in the current directory to store the article information.
 
@@ -40,13 +41,15 @@ You can use other commands without login.  In that case you will be accessing as
 
 ### checkout
 
-    met checkout [-f] title
+    met checkout [-f] [-s SECTION] title
 
 Article text will be retrieved and stored as a local file in the current directory.  You can edit the file, and use `commit` subcommand to send the edited text to update the article.
 
+Also, checkout command can be used to update the text to the newest revision.
+
 If there is a local file of the same name in the current directory, `checkout` fails.  Use `-f` option to force overwrite.
 
-Also, checkout command can be used to update the text to the newest revision.
+Option `-s` specifies the section edit.  SECTION must be the number, and the section text is written to a local file into a filename with ".section" and the section number added.
 
 ### commit
 
@@ -64,15 +67,19 @@ The format of output is:
 
 ### revision
 
-    met revision [-r REVISION] title
+    met revision [-r REVISION] [-s SECTION] title
 
 Prints the specified revision of the article to the standard output.  Option `-r REVISION` specifies the revision ID.  If no revision is specified, the newest revision is printed.
 
+If `-s` option is specified, the section text with specified section number is printed.
+
 ### diff
 
-    met diff [-r REVISION1 [-r REVISION2]] title
+    met diff [-r REVISION1 [-r REVISION2]] [-s SECTION] title
 
 Compares specified revisions of the article text.  If no `-r` option is specified, it compares the local text with the base revision text.  If one `-r` option is specified, the local text is compared to the specified reivision text.  If two `-r` options are specified, those two revisions are compared.
+
+If `-s` is to compare the text of specified section.
 
 ### status
 
