@@ -108,5 +108,3 @@ Some configuration parameters can be changed by creating `.MediawikiEditorTool/c
 * Support `-l LANG` other than `en`
 
 * Support log length larger than 500
-
-* Support section edit
