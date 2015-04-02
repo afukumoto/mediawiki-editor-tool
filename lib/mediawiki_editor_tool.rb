@@ -334,7 +334,7 @@ module MediawikiEditorTool
 
           # default props: revid parentid minor user timestamp comment
           print "  "
-          printf "%9s %s %-17s %5d", rev['revid'], rev['timestamp'], rev['user'], rev['size']
+          printf "%9s %s %-17s %5d %s", rev['revid'], rev['timestamp'], rev['user'], rev['size'], (rev['minor'] ? 'm' : '.')
           print " \"#{rev['comment']}\"" if not_null(rev['comment'])
           print "\n"
         end
