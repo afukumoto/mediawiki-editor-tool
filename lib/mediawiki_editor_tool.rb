@@ -333,6 +333,7 @@ module MediawikiEditorTool
           md5: Digest::MD5.hexdigest(text)
         }
         params[:section] = section if section
+        params[:minor] = '' if minor
         api.edit(params)
 
       when "revision"
