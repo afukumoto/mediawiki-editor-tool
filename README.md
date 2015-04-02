@@ -106,5 +106,3 @@ Some configuration parameters can be changed by creating `.MediawikiEditorTool/c
 * `-l LANG` and `-u URL` options are not remembered to subsequent use of met.  You need to specify it every time.
 
 * Support `-l LANG` other than `en`
-
-* Support log length larger than 500

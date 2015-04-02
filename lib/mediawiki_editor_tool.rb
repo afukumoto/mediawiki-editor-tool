@@ -137,6 +137,36 @@ module MediawikiEditorTool
       Page.new.from_response(reply)
     end
 
+    def each_revision(title, params = {})
+      params[:titles] ||= title
+      params[:rvprop] ||= 'ids|flags|timestamp|user|comment|size'
+      params[:rvlimit] ||= 500
+      params[:continue] = ''
+      loop {
+        reply = self.prop(:revisions, params)
+        reply.success? or abort "failed to retrieve"
+        log = Page.new.from_response(reply)
+        log.revisions.each do |r|
+          pp r if $DEBUG
+          yield r
+        end
+        p reply['continue'] if $DEBUG
+        break if reply['continue'] == nil || reply['continue']['rvcontinue'] == nil
+        params[:rvcontinue] = reply['continue']['rvcontinue']
+      }
+    end
+
+    def revision_by_date(title, datestr)
+      date = DateTime.parse(datestr)
+      self.each_revision(title) do |rev|
+        revdate = DateTime.parse(rev['timestamp'])
+        if revdate <= date
+          return rev['revid']
+        end
+      end
+      nil
+    end
+
     def load_cookie(file)
       @cookie_jar.load(file)
     end
@@ -293,16 +323,15 @@ module MediawikiEditorTool
       when "log"
         loglen = 10
         opts = OptionParser.new
-        opts.on('-l LOGLENGTH') { |v| loglen = v }
+        opts.on('-l LOGLENGTH') { |v| loglen = v.to_i }
         opts.order!(argv)
 
         title = argv.shift or abort "Need title"
         title, = check_title(title)
-        log = api.get_log(title, loglen) or abort "Unknown title"
-        # print "pageid: #{log.pageid]}, title: #{log.title]}\n"
-        # print "revisions:\n"
-        # p log['revisions'][0]
-        log.revisions.each do |rev|
+        api.each_revision(title) do |rev|
+          loglen -= 1
+          break if loglen < 0
+
           # default props: revid parentid minor user timestamp comment
           print "  "
           printf "%9s %s %-17s %5d", rev['revid'], rev['timestamp'], rev['user'], rev['size']
@@ -338,9 +367,11 @@ module MediawikiEditorTool
 
       when "revision"
         rev = nil
+        revdate = nil
         section_arg = nil
         opts = OptionParser.new
         opts.on('-r REVISION') { |v| rev = v }
+        opts.on('-D DATETIME') { |v| revdate = v }
         opts.on('-s SECTION') { |v| section_arg = v }
         opts.order!(argv)
 
@@ -349,6 +380,9 @@ module MediawikiEditorTool
 
         if section_arg
           section = section_arg
+        end
+        if revdate
+          rev = api.revision_by_date(title, revdate) or abort 'No revision for the specified date'
         end
         if rev
           page = api.get_revision(title, rev, section)
