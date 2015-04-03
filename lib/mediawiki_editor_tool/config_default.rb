@@ -7,7 +7,9 @@ module MediawikiEditorTool
     API_URL:		"https://en.wikipedia.org/w/api.php",
     DIFFCMD:		"diff",
     DIFFOPTS:		["-u"],
-    ARTICLE_FILENAME_EXTENSION: ".wiki"
+    ARTICLE_FILENAME_EXTENSION: ".wiki",
+    PREVIEW_FILE_NAME:	"preview.html",
+    BROWSER:		"firefox"
   }      
 
   class << self

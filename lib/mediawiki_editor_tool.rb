@@ -167,6 +167,19 @@ module MediawikiEditorTool
       nil
     end
 
+    def get_preview(text)
+      params = {
+        text: text,
+        contentmodel: "wikitext",
+        token_type: false
+      }
+      reply = self.action(:parse, params)
+      reply.success? or abort "failed to retrieve"
+      pp reply if $DEBUG
+      data = reply.data['text'] or return nil
+      html = data['*'] or return nil
+    end
+
     def load_cookie(file)
       @cookie_jar.load(file)
     end
@@ -224,6 +237,10 @@ module MediawikiEditorTool
 
     def diff(filepath1, filepath2)
       system(Config[:DIFFCMD], *Config[:DIFFOPTS], filepath1, filepath2)
+    end
+
+    def browse(path)
+      system(Config[:BROWSER], path)
     end
 
     def main
@@ -338,6 +355,17 @@ module MediawikiEditorTool
           print " \"#{rev['comment']}\"" if not_null(rev['comment'])
           print "\n"
         end
+
+      when "preview"
+        title = argv.shift or abort "Need title"
+        title, section = check_title(title)
+
+        text = File.read(article_filename(title, section))
+        html = api.get_preview(text) or abort "Failed to obtain preview data"
+
+        filepath = File.expand_path(Config[:PREVIEW_FILE_NAME])
+        File.write(filepath, html)
+        browse(filepath)
 
       when "commit"
         summary = ""

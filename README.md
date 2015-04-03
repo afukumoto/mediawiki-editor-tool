@@ -18,7 +18,7 @@ $ gem install ./MediawikiEditorTool-0.0.1.gem
 
     met [-l LANG] [-u URL] subcommand [arguments...]
 
-Use the command `met` with subcommands `login`, `checkout`, `commit`, `log`, `revision`, `diff`, `status`.
+Use the command `met` with subcommands `login`, `checkout`, `preview`, `commit`, `log`, `revision`, `diff`, `status`.
 
 By default, met command accesses https://en.wikipedia.org/.  Option `-l LANG` is to choose the language of Wikipedia site.
 
@@ -50,6 +50,12 @@ Also, checkout command can be used to update the text to the newest revision.
 If there is a local file of the same name in the current directory, `checkout` fails.  Use `-f` option to force overwrite.
 
 Option `-s` specifies the section edit.  SECTION must be the number, and the section text is written to a local file into a filename with ".section" and the section number added.
+
+### preview
+
+    met preview title
+
+Preview the locally edited file using an external HTML browser (`firefox` by default).  At the moment, the rendered HTML will look poor since the style sheets and image files are not available for preview.
 
 ### commit
 
