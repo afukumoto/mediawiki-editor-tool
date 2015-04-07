@@ -356,6 +356,25 @@ module MediawikiEditorTool
           print "\n"
         end
 
+      when "toc"
+        title = argv.shift or abort "Need title"
+        title, section = check_title(title)
+
+        reply = api.action(:parse, 
+                           page: title,
+                           prop: "sections",
+                           token_type: false)
+        reply.success? or abort "Failed to retrieve"
+        sections = reply.data['sections'] or abort "Failed to parse"
+        sections.each do |sec|
+          pp sec if $DEBUG
+          printf " %d:%s%s %s\n",
+                 sec['index'].to_i,
+                 " " * (2 * sec['toclevel'].to_i),
+                 sec['number'],
+                 sec['line']
+        end
+
       when "preview"
         title = argv.shift or abort "Need title"
         title, section = check_title(title)
