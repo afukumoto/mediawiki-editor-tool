@@ -187,6 +187,11 @@ module MediawikiEditorTool
     def save_cookie(file)
       @cookie_jar.save(file)
     end
+
+    ### XXXX quick hack
+    def has_username_cookie
+      (@cookie_jar.cookies.find {|c| c.name == "enwikiUserName" }) != nil
+    end
   end
 
   class << self
@@ -396,6 +401,8 @@ module MediawikiEditorTool
         opts.order!(argv)
         title = argv.shift or abort "Need title"
         title, section = check_title(title)
+
+        abort "Not logged in" unless api.has_username_cookie
 
         working_page = Page.new.from_metafile(title, section) or abort "Unknown title"
 
