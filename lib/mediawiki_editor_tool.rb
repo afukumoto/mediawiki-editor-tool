@@ -190,7 +190,7 @@ module MediawikiEditorTool
 
     ### XXXX quick hack
     def has_username_cookie
-      @cookie_jar.cookies.find {|c| c.name == "enwikiUserName" }
+      @cookie_jar.cookies.find {|c| c.name == "centralauth_User" }
     end
   end
 
