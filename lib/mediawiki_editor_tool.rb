@@ -399,6 +399,9 @@ module MediawikiEditorTool
 
         working_page = Page.new.from_metafile(title, section) or abort "Unknown title"
 
+        ##
+        ## send new file
+        ##
         text = File.read(article_filename(title, section))
         params = {
           title: title,
@@ -410,7 +413,18 @@ module MediawikiEditorTool
         }
         params[:section] = section if section
         params[:minor] = '' if minor
-        api.edit(params)
+        reply = api.edit(params)
+
+        pp reply if $DEBUG
+
+        ##
+        ## update metadata to new revision
+        ##
+        newrevid = reply.data['newrevid'] or abort "Commit succeeded, but the response was not an expected format."
+        puts "newrevid: #{newrevid}" if $DEBUG
+
+        page = api.get_revision(title, newrevid, section) or abort "Failed to retrieve new revision"
+        page.save_meta
 
       when "revision"
         rev = nil
