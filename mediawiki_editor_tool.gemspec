@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.license	= 'MIT'
   s.executables	<< "met"
   s.files	= `git ls-files`.split
-  s.add_runtime_dependency "mediawiki_api", '~> 0.3'
+  s.add_runtime_dependency "mediawiki_api", '~> 0.5'
 end

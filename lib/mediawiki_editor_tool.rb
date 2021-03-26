@@ -89,21 +89,6 @@ module MediawikiEditorTool
   end
 
   class Client < MediawikiApi::Client
-    # override MediawikiApi::Client.initialize to set @cookie_jar and headers
-    def initialize(url, log = false)
-      @cookie_jar = HTTP::CookieJar.new
-      headers = { 'User-Agent' => MediawikiEditorTool::user_agent_string }
-      @conn = Faraday.new(url: url, headers: headers) do |faraday|
-        faraday.request :multipart
-        faraday.request :url_encoded
-        faraday.response :logger if log
-        faraday.use :cookie_jar, jar: @cookie_jar
-        faraday.adapter Faraday.default_adapter
-      end
-      @logged_in = false
-      @tokens = {}
-    end
-
     def get_page(title, params = {})
       params['rvprop'] ||= 'content|ids|timestamp|sha1'
       params['titles'] ||= title
@@ -181,11 +166,11 @@ module MediawikiEditorTool
     end
 
     def load_cookie(file)
-      @cookie_jar.load(file)
+      cookies.load(file)
     end
 
     def save_cookie(file)
-      @cookie_jar.save(file)
+      cookies.save(file)
     end
   end
 
