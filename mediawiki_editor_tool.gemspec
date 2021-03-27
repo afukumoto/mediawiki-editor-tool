@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name	= "MediawikiEditorTool"
   s.version	= MediawikiEditorTool::VERSION
   s.authors	= ["Atsushi Fukumoto"]
-  s.email	= ["fukumoto@imasy.or.jp"]
+  s.email	= ["fukumoto.at@gmail.com"]
   s.summary	= "A tool for Mediawiki users"
   s.description	= "Uses Mediawiki API to access the wiki articles, including Wikipedia."
   s.homepage	= "https://github.com/afukumoto/mediawiki-editor-tool"
